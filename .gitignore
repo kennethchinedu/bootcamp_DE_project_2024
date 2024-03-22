@@ -1,0 +1,13 @@
+#Ignore enviromental variable file
+.env 
+
+*.terraform*
+*.tfstate
+*.tfstate.*
+
+variables.tf 
+
+config/
+plugins/
+logs/
+codes.txt
