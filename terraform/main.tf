@@ -14,7 +14,7 @@ resource "aws_s3_bucket" "kende-project-bucket" {
   }
 }
 
-
+#Declaring snowflake provider
 terraform {
   required_providers {
     snowflake = {
@@ -32,7 +32,7 @@ provider "snowflake" {
   role     = var.snowflake_role
 }
 
-
+#Creating snowflake database, warehouse and schemas
 resource "snowflake_database" "db" {
   name = "de_project"
 }
