@@ -2,17 +2,12 @@ import json, requests, os
 from datetime import timedelta, datetime
 import pandas as pd
 from airflow.hooks.S3_hook import S3Hook
-
-
-start_year = '2024'
-order_by = 'date'
-api_key = '279636fc8c7803810a4e9d87f74e790e'  # New environment variable for API key
-limit = 200   #The limit for each request
+from airflow.models import Variable
 
 start_year = '2024'
 order_by = 'date'
-api_key_env_variable = 'NETFLIX_API_KEY'  # New environment variable for API key
-limit = 100  # Example: Set the limit for each request
+api_key = Variable.get('NETFLIX_API_KEY')  # New environment variable for API key
+limit = 200  # Example: Set the limit for each request
 
 def extract_titles():
     all_data = []
@@ -22,7 +17,7 @@ def extract_titles():
     while True:
         url = f"https://api.apilayer.com/unogs/search/titles?start_year={start_year}&order_by={order_by}&limit={limit}&offset={offset}"
         payload = {}
-        headers = {"apikey": 'TeQ3XJVWyIw70z0fvREHoiBnC0ljFg4i'}
+        headers = {"apikey": api_key}
 
         response = requests.request("GET", url, headers=headers, data=payload)
         data = response.json()
@@ -58,7 +53,7 @@ def extract_titles():
     df.to_csv(csv_file_name, index=False)
    
     return csv_file_name
-    # Display the DataFrame
+
 
 
 
