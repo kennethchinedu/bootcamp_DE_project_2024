@@ -8,6 +8,7 @@ from cosmos import DbtDag, ProjectConfig, ProfileConfig, ExecutionConfig
 from cosmos.profiles import PostgresUserPasswordProfileMapping
 from cosmos.profiles import SnowflakeUserPasswordProfileMapping
 from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.hooks.S3_hook import S3Hook
 from python_script import extract_titles, upload_titles_to_s3
 from snowflake_squeries import create_table_query, load_title_query, create_staging_query, create_stream_query, load_stream_query
@@ -101,7 +102,12 @@ with DAG(
         snowflake_conn_id='snowflake_con'
     )
 
-
+    trigger_dbt_dag = TriggerDagRunOperator(
+        task_id="trigger_dbt_dag",
+        trigger_dag_id="dbt_dag",
+        wait_for_completion=True # Note that this parameter only exists in Airflow 2.6+
+    )
 
     # run_dbt_model  >> extract_movies_task >> upload_to_s3_task 
-    [create_raw_table_tsk, create_stg_table_tsk, create_stream_task ] >> extract_movies_task >> upload_to_s3_task >> load_title_snowflake >> load_stream_tsk
+    [create_raw_table_tsk, create_stg_table_tsk, create_stream_task ] >> extract_movies_task >> upload_to_s3_task >> load_title_snowflake >> load_stream_tsk >> trigger_dbt_dag
+    
