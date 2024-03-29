@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: netflix
+    database: project
+    schema: netflix_raw
+    tables:
+      - name: movie_raw
+   
