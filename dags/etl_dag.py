@@ -1,17 +1,38 @@
 from airflow import DAG
 from datetime import timedelta, datetime
-import json, requests
+import json, requests, os
 from airflow.operators.python import PythonOperator 
-from airflow.providers.http.sensors.http import HttpSensor
+# from airflow.operators.bash_operator import BashOperator
 from airflow.providers.http.operators.http import SimpleHttpOperator
-from airflow.operators.bash_operator import BashOperator 
-from airflow.providers.amazon.aws.sensors.s3 import S3KeySensor
+from cosmos import DbtDag, ProjectConfig, ProfileConfig, ExecutionConfig
+from cosmos.profiles import PostgresUserPasswordProfileMapping
+from cosmos.profiles import SnowflakeUserPasswordProfileMapping
 from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator
-from airflow.contrib.hooks.snowflake_hook import SnowflakeHook
-# from airflow.providers.snowflake.transfers.s3_to_snowflake.S3ToSnowflakeOperator import S3ToSnowflakeOperator
 from airflow.hooks.S3_hook import S3Hook
 from python_script import extract_titles, upload_titles_to_s3
 from snowflake_squeries import create_table_query, load_title_query, create_staging_query, create_stream_query, load_stream_query
+
+
+profile_config = ProfileConfig(profile_name="admin",
+                               target_name="dev",
+                               profile_mapping=SnowflakeUserPasswordProfileMapping(conn_id="snowflake_con", 
+                                                    profile_args={
+                                                        "database": "project",
+                                                        "schema": "netfix_analytics"
+                                                        },
+                                                    ))
+
+
+dbt_snowflake_dag = DbtDag(
+    project_config=ProjectConfig("/usr/local/airflow/dags/dbt/bootcamp",),
+    operator_args={"install_deps": True},
+    profile_config=profile_config,
+    execution_config=ExecutionConfig(dbt_executable_path=f"{os.environ['AIRFLOW_HOME']}/dbt_venv/bin/dbt",),
+    schedule_interval="@daily",
+    start_date=datetime(2023, 9, 10),
+    catchup=False,
+    dag_id="dbt_dag",
+)
 
 
 
@@ -31,6 +52,13 @@ with DAG(
     default_args=default_args,
     schedule_interval = '@daily',
     catchup=False ) as dag:
+
+    # Define the dbt run command as a BashOperator
+    # run_dbt_model = BashOperator(
+    #     task_id='run_dbt_model',
+    #     bash_command='dbt debug',
+    #     dag=dag
+    # )
 
     create_raw_table_tsk = SnowflakeOperator(
         task_id = 'create_raw_table_tsk',
@@ -75,4 +103,5 @@ with DAG(
 
 
 
-    [create_raw_table_tsk, create_stg_table_tsk, create_stream_task ] >> extract_movies_task >> upload_to_s3_task >> load_title_snowflake  >> load_stream_tsk
+    # run_dbt_model  >> extract_movies_task >> upload_to_s3_task 
+    [create_raw_table_tsk, create_stg_table_tsk, create_stream_task ] >> extract_movies_task >> upload_to_s3_task >> load_title_snowflake >> load_stream_tsk
