@@ -4,7 +4,9 @@ import pandas as pd
 from airflow.hooks.S3_hook import S3Hook
 from airflow.models import Variable
 
-start_year = '2024'
+
+today = datetime.now().strftime('%Y-%m-%d')
+start_year = '2022'
 order_by = 'date'
 api_key = Variable.get('NETFLIX_API_KEY')  # New environment variable for API key
 limit = 200  # Example: Set the limit for each request
