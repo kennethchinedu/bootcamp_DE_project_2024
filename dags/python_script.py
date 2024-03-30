@@ -17,7 +17,7 @@ def extract_titles():
 
     # Continue fetching data until there are no more results left
     while True:
-        url = f"https://api.apilayer.com/unogs/search/titles?start_year={start_year}&order_by={order_by}&limit={limit}&offset={offset}"
+        url = f"https://api.apilayer.com/unogs/search/titles?start_year={today}&order_by={order_by}&limit={limit}&offset={offset}"
         payload = {}
         headers = {"apikey": api_key}
 
