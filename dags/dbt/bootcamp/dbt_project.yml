@@ -36,3 +36,9 @@ models:
     staging:
       +materialized: view
       snowflake_warehouse: compute_wh
+    dim:
+      +materialized: view
+      snowflake_warehouse: compute_wh
+    fct:
+      +materialized: table
+      snowflake_warehouse: compute_wh
