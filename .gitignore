@@ -13,5 +13,5 @@ logs/
 codes.txt
 code/
 
-dags/__pycache__/
+dags/__pycache__/*
 __pycache__
