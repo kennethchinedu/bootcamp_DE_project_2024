@@ -25,14 +25,6 @@ This project fetches historical data from the Netflix API covering the years 202
 - **Astro**: Astro is used for managing Airflow configurations.
 - **Initiate Project**: Start the project using `astro dev start`.
 
-## Running the Project
-
-To start the project, execute the following command:
-
-```bash
-astro dev start
-
-
 
 ## Viewing My Dashboard
 
@@ -43,3 +35,11 @@ https://20edd4d1.us2a.app.preset.io/superset/dashboard/p/mvdR8VN8ngP/
 
 Do email me if you need any permission, preset makes it a bit difficult to share dashboard publicly
 However, this is an image for a reference
+
+## Running the Project
+
+To start the project, execute the following command:
+
+```bash
+astro dev start
+
