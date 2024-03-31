@@ -31,3 +31,15 @@ To start the project, execute the following command:
 
 ```bash
 astro dev start
+
+
+
+## Viewing My Dashboard
+
+To view my dashboard please use this permerlink:
+You may be required to just sign up to view this dashboard on preset
+
+https://20edd4d1.us2a.app.preset.io/superset/dashboard/p/mvdR8VN8ngP/
+
+Do email me if you need any permission, preset makes it a bit difficult to share dashboard publicly
+However, this is an image for a reference
