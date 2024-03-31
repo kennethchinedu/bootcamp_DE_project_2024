@@ -35,6 +35,21 @@ https://20edd4d1.us2a.app.preset.io/superset/dashboard/p/mvdR8VN8ngP/
 
 Do email me if you need any permission, preset makes it a bit difficult to share dashboard publicly
 However, this is an image for a reference
+My email: anamsken60@gmail.com
+
+
+
+### Airflow extraction dag
+![dashboard](dashboard.png)
+
+### DBT dag
+![dbt_dag](dbt_dag.png)
+
+## My preset dashboard
+![etl_pipeline](etl_pipeline.png)
+
+
+
 
 ## Running the Project
 

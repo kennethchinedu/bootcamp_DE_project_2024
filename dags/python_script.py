@@ -27,7 +27,7 @@ def extract_titles():
         # Checking if there are no more results left
         if not data['results']:
             break
-
+            print(f'No new movie released today{ today}')
        
         for result in data["results"]:
             all_data.append({
