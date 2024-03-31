@@ -38,15 +38,16 @@ However, this is an image for a reference
 My email: anamsken60@gmail.com
 
 
-
-### Airflow extraction dag
+### My preset dashboard
 ![dashboard](dashboard.png)
+
+
+## My etl pipeline
+![etl_pipeline](etl_pipeline.png)
 
 ### DBT dag
 ![dbt_dag](dbt_dag.png)
 
-## My preset dashboard
-![etl_pipeline](etl_pipeline.png)
 
 
 
