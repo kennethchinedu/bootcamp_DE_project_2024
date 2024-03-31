@@ -1,3 +1,6 @@
+-- This dbt model seperates the data into seperate years and stores them in the datalake
+
+
 {{
   config(
     materialized='view'
