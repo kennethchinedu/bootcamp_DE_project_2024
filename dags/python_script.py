@@ -4,12 +4,12 @@ import pandas as pd
 from airflow.hooks.S3_hook import S3Hook
 from airflow.models import Variable
 
-
+# I ran the initial script with start_year parameter to fetch historical data, however, subsequent runs runs with the today parameter
 today = datetime.now().strftime('%Y-%m-%d')
 start_year = '2022'
 order_by = 'date'
 api_key = Variable.get('NETFLIX_API_KEY')  # New environment variable for API key
-limit = 200  # Example: Set the limit for each request
+limit = 200 
 
 def extract_titles():
     all_data = []
@@ -24,11 +24,11 @@ def extract_titles():
         response = requests.request("GET", url, headers=headers, data=payload)
         data = response.json()
 
-        # Check if there are no more results left
+        # Checking if there are no more results left
         if not data['results']:
             break
 
-        # Extract relevant fields from each result and append to all_data
+       
         for result in data["results"]:
             all_data.append({
                 "imdb_id": result["imdb_id"],
@@ -45,10 +45,10 @@ def extract_titles():
         offset += limit
         print (f'loding {offset} data')
 
-    # Create a DataFrame from all_data
+    
     df = pd.DataFrame(all_data)
 
-    # Save the DataFrame as a new CSV file with timestamp
+    # Saving the DataFrame as a new CSV file with timestamp to make each file name unique
     timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
     csv_file_name = f'Netflix2024_{timestamp}.csv'
     print(f"CSV file {csv_file_name} saved successfully.")

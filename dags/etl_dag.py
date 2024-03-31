@@ -2,8 +2,6 @@ from airflow import DAG
 from datetime import timedelta, datetime
 import json, requests, os
 from airflow.operators.python import PythonOperator 
-# from airflow.operators.bash_operator import BashOperator
-from airflow.providers.http.operators.http import SimpleHttpOperator
 from cosmos import DbtDag, ProjectConfig, ProfileConfig, ExecutionConfig
 from cosmos.profiles import PostgresUserPasswordProfileMapping
 from cosmos.profiles import SnowflakeUserPasswordProfileMapping
@@ -101,13 +99,13 @@ with DAG(
         sql = load_stream_query,
         snowflake_conn_id='snowflake_con'
     )
-
+    #This last task triggers another dbt dag after  the extraction and loading tasks are done
     trigger_dbt_dag = TriggerDagRunOperator(
         task_id="trigger_dbt_dag",
         trigger_dag_id="dbt_dag",
-        wait_for_completion=True # Note that this parameter only exists in Airflow 2.6+
+        wait_for_completion=True 
     )
 
-    # run_dbt_model  >> extract_movies_task >> upload_to_s3_task 
+    
     [create_raw_table_tsk, create_stg_table_tsk, create_stream_task ] >> extract_movies_task >> upload_to_s3_task >> load_title_snowflake >> load_stream_tsk >> trigger_dbt_dag
     
