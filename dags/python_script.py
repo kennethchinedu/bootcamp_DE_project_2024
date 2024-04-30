@@ -6,7 +6,7 @@ from airflow.models import Variable
 
 # I ran the initial script with start_year parameter to fetch historical data, however, subsequent runs runs with the today parameter
 today = datetime.now().strftime('%Y-%m-%d')
-start_year = '2022'
+start_year = '2024'
 order_by = 'date'
 api_key = Variable.get('NETFLIX_API_KEY')  # New environment variable for API key
 limit = 200 
@@ -17,7 +17,7 @@ def extract_titles():
 
     # Continue fetching data until there are no more results left
     while True:
-        url = f"https://api.apilayer.com/unogs/search/titles?start_year={today}&order_by={order_by}&limit={limit}&offset={offset}"
+        url = f"https://api.apilayer.com/unogs/search/titles?start_year={start_year}&order_by={order_by}&limit={limit}&offset={offset}"
         payload = {}
         headers = {"apikey": api_key}
 
