@@ -290,5 +290,8 @@ services:
       airflow-init:
         condition: service_completed_successfully
 
+  astronomer:
+    build: .
+
 volumes:
   postgres-db-volume:
